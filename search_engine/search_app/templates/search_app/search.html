@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .search-container {
+            border: 2px solid black;
+            padding: 20px;
+            width: 50%;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <form method="get" action="{% url 'search' %}">
+            <input type="text" name="q" placeholder="Search something ......">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="search-results">
+        {% if query %}
+            <h3>Results for "{{ query }}":</h3>
+            <ul>
+                {% for result in results %}
+                    <li>
+                        <a href="{{ result.file_path }}" target="_blank">{{ result.document|slice:":100" }}...</a>
+                        <small>(Score: {{ result.score }})</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h3>No results yet. Enter a search query.</h3>
+        {% endif %}
+    </div>
+    
+</body>
+</html>
