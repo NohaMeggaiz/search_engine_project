@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render
 from src.extractors.base_extractor import extract_text
 from src.preprocess.text_preprocessor import preprocess_text
@@ -20,10 +21,11 @@ def search_view(request):
         search_results = search(processed_query, tfidf_matrix, vectorizer)
 
         for doc_id, score in search_results:
+            file_name = os.listdir(doc_dir)[doc_id]
             results.append({
                 'score': score,
                 'document': documents[doc_id],
-                'file_path': os.path.join(doc_dir, os.listdir(doc_dir)[doc_id])  # Match file to ID
+                'file_path': f"{settings.DATA_URL}{file_name}"  # Generate data URL
             })
 
     return render(request, 'search_app/search.html', {'query': query, 'results': results})
