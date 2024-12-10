@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Search Engine</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'images/bg.jpeg' %}"); /* Chemin de l'image de fond */
+            background-size: cover; /* L'image couvre toute la page */
+            background-position: center; /* Centrer l'image */
+            background-repeat: no-repeat; /* Ne pas répéter l'image */
+            flex-direction: column; /* Permet de placer les éléments les uns sous les autres */
+        }
+
+        .search-container {
+            display: flex;
+            flex-direction: column; /* Alignement vertical des éléments */
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            padding: 20px;
+            width: 80%;
+            text-align: center;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.8); /* Fond blanc semi-transparent */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+        }
+
+        form {
+            display: flex; /* Alignement horizontal */
+            align-items: center; /* Centre les éléments verticalement */
+            justify-content: center; /* Centre les éléments horizontalement */
+            gap: 20px; /* Espacement entre le titre et la barre */
+            margin-bottom: 20px; /* Espacement sous la barre de recherche */
+            position: relative; /* Nécessaire pour que l'image soit positionnée par rapport au formulaire */
+        }
+
+        .header {
+            font-size: 28px; /* Taille du texte */
+            font-weight: bold;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .header .highlight-blue {
+            color: #189fc4; /* Bleu ciel pour la deuxième moitié du texte */
+        }
+
+        .header .highlight-gray {
+            color: #777676; /* Gris foncé pour la première moitié du texte */
+        }
+
+        input[type="text"] {
+            width: 700px; /* Largeur de la barre de recherche */
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            background: #d3d3d3; /* Couleur gris clair */
+            color: black;
+            border: none;
+            font-size: 16px;
+            transition: background 0.3s;
+            position: relative; /* Nécessaire pour placer l'image */
+        }
+
+        button:hover {
+            background: #a9a9a9;
+        }
+
+        /* Image sur le bouton */
+        .image-on-button {
+            position: absolute;
+            top: -45px; /* Ajuste la position verticale */
+            left: 50%; /* Centre horizontalement */
+            transform: translateX(-50%);
+            width: 70px; /* Augmente la taille de l'image */
+            height: auto; /* Conserve les proportions */
+            pointer-events: none; /* Permet de cliquer sur le bouton sans problème */
+        }
+
+        /* Images en bas de la page */
+        .left-image {
+            width: 200px; /* Largeur de l'image */
+            height: auto; /* Maintien des proportions */
+            position: absolute;
+            bottom: 10px; /* Place l'image en bas de l'écran */
+            left: 20%; /* Décalage vers la gauche */
+            transform: translateX(-50%);
+        }
+
+        .skeleton-image {
+            width: 200px; /* Largeur de l'image */
+            height: auto; /* Maintien des proportions */
+            position: absolute;
+            bottom: 10px; /* Place l'image en bas de l'écran */
+            left: 40%; /* Décalage vers le centre */
+            transform: translateX(-50%);
+        }
+
+        .additional-image {
+            width: 200px; /* Largeur de l'image */
+            height: auto; /* Maintien des proportions */
+            position: absolute;
+            bottom: 10px; /* Place l'image en bas de l'écran */
+            left: 60%; /* Décalage vers la droite */
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Conteneur de la barre de recherche -->
+    <div class="search-container">
+        <form method="get" action="{% url 'search' %}">
+            <h1 class="header">
+                <span class="highlight-gray">Medi</span><span class="highlight-blue">Quest</span>
+            </h1>
+            <input type="text" name="q" placeholder="Search for medical content...">
+            <button type="submit">
+                search
+            </button>
+        </form>
+    </div>
+    <div class="search-results">
+        {% if query %}
+            <h3>Results for "{{ query }}":</h3>
+            <ul>
+                {% for result in results %}
+                    <li>
+                        <a href="{{ result.file_path }}" target="_blank">{{ result.document|slice:":50" }}...</a>
+                        <small>(Score: {{ result.score }})</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h3>No results yet. Enter a search query.</h3>
+        {% endif %}
+    </div>
+
+</body>
+</html>

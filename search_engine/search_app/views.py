@@ -28,4 +28,4 @@ def search_view(request):
                 'file_path': f"{settings.DATA_URL}{file_name}"  # Generate data URL
             })
 
-    return render(request, 'search_app/search.html', {'query': query, 'results': results})
+    return render(request, 'search_app/index.html', {'query': query, 'results': results})
